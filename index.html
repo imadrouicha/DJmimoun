@@ -8,11 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        body, html {
+    overflow-x: hidden;
+    width: 100%;
+}
 
         body {
             font-family: 'Inter', sans-serif;
@@ -340,19 +345,80 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .main-content {
-                padding: 0 1rem;
-            }
-        }
+       @media (max-width: 768px) {
+
+    .nav-bar {
+        padding: 1rem;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .main-content {
+        padding: 0 12px;
+        margin: 1rem auto;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+    }
+
+    .booking-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calendar-day {
+        min-height: 80px;
+        padding: 8px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+        max-height: 90vh;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+
+    .glass-card {
+        border-radius: 14px;
+    }
+}
 
         /* Loading Spinner */
         .spinner {
@@ -417,7 +483,7 @@
                     <div class="nav-item" data-page="team">🎵 Team</div>
                     <div class="nav-item" data-page="profile">👤 Profile</div>
                 </div>
-                <button class="btn-outline-gold" onclick="logout()" style="padding: 8px 16px;">Logout</button>
+                
             </div>
         </div>
 
@@ -513,22 +579,14 @@
             showDashboard();
         });
         
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('djmorocco_user');
-            document.getElementById('loginContainer').classList.add('active');
-            document.getElementById('appContainer').classList.remove('active');
-        }
+        function logout() {}
         
         // Check for existing session
-        const savedUser = localStorage.getItem('djmorocco_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            document.getElementById('loginContainer').classList.remove('active');
-            document.getElementById('appContainer').classList.add('active');
-            loadData();
-            showDashboard();
-        }
+        currentUser = { name: "DJ Mimoun" };
+document.getElementById('loginContainer').style.display = 'none';
+document.getElementById('appContainer').classList.add('active');
+loadData();
+showDashboard();
         
         // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
