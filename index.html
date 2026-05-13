@@ -1,0 +1,1232 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>DJ Mimoun | Premium DJ Management Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Premium Dark Theme with Gold Accents */
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-elevated: #1c1c1c;
+            --gold-primary: #d4af37;
+            --gold-secondary: #ffd700;
+            --gold-glow: rgba(212, 175, 55, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --success: #00c853;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-card);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-primary);
+            border-radius: 4px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Glassmorphism Effects */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+        }
+
+        /* Buttons */
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            color: #0a0a0a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--gold-glow);
+        }
+
+        .btn-outline-gold {
+            background: transparent;
+            border: 2px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Layout */
+        .app-container {
+            display: none;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--gold-primary);
+            color: #0a0a0a;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            margin-top: 0.5rem;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .calendar-day:hover {
+            border-color: var(--gold-primary);
+            transform: scale(1.02);
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--gold-primary);
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-badge {
+            background: var(--gold-primary);
+            color: #0a0a0a;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--gold-primary);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        /* Booking List */
+        .bookings-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .booking-item {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .booking-item:hover {
+            transform: translateX(5px);
+            border-left: 3px solid var(--gold-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginContainer" class="app-container active">
+        <div style="min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem;">
+            <div class="glass-card" style="padding: 3rem; max-width: 400px; width: 100%; text-align: center;">
+                <h1 class="logo" style="font-size: 3rem; margin-bottom: 2rem;">DJ Mimoun</h1>
+                <h2 style="margin-bottom: 1.5rem;">Welcome Back</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" placeholder="Email" required style="background: var(--bg-elevated);">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-gold" style="width: 100%;">Login / Sign Up</button>
+                </form>
+                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 12px;">Demo: Any email/password works</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="appContainer" class="app-container">
+        <div class="nav-bar">
+            <div class="nav-content">
+                <div class="logo">🎧 DJ Mimoun</div>
+                <div class="nav-menu" id="navMenu">
+                    <div class="nav-item active" data-page="dashboard">📊 Dashboard</div>
+                    <div class="nav-item" data-page="bookings">📅 Bookings</div>
+                    <div class="nav-item" data-page="calendar">🗓️ Calendar</div>
+                    <div class="nav-item" data-page="clients">👥 Clients</div>
+                    <div class="nav-item" data-page="contracts">📄 Contracts</div>
+                    <div class="nav-item" data-page="payments">💰 Payments</div>
+                    <div class="nav-item" data-page="team">🎵 Team</div>
+                    <div class="nav-item" data-page="profile">👤 Profile</div>
+                </div>
+                <button class="btn-outline-gold" onclick="logout()" style="padding: 8px 16px;">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Data Models
+        let currentUser = null;
+        let bookings = [];
+        let clients = [];
+        let teamMembers = [];
+        
+        // Load data from localStorage
+        function loadData() {
+            const storedBookings = localStorage.getItem('djmorocco_bookings');
+            if (storedBookings) bookings = JSON.parse(storedBookings);
+            
+            const storedClients = localStorage.getItem('djmorocco_clients');
+            if (storedClients) clients = JSON.parse(storedClients);
+            
+            const storedTeam = localStorage.getItem('djmorocco_team');
+            if (storedTeam) teamMembers = JSON.parse(storedTeam);
+            
+            // Demo data if empty
+            if (bookings.length === 0) {
+                bookings = [
+                    {
+                        id: 1,
+                        clientName: "Ahmed Benjelloun",
+                        clientPhone: "+212 6XX XXX XXX",
+                        eventType: "Wedding",
+                        city: "Casablanca",
+                        venue: "Four Seasons Hotel",
+                        eventDate: new Date().toISOString().split('T')[0],
+                        startTime: "19:00",
+                        endTime: "02:00",
+                        specialRequests: "Moroccan & International Mix",
+                        deposit: 5000,
+                        totalPrice: 15000,
+                        status: "Confirmed"
+                    },
+                    {
+                        id: 2,
+                        clientName: "Fatima Zahra",
+                        clientPhone: "+212 6XX XXX XXX",
+                        eventType: "Engagement",
+                        city: "Marrakech",
+                        venue: "La Mamounia",
+                        eventDate: new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0],
+                        startTime: "20:00",
+                        endTime: "01:00",
+                        specialRequests: "Traditional Moroccan Music",
+                        deposit: 3000,
+                        totalPrice: 10000,
+                        status: "Pending"
+                    }
+                ];
+                saveBookings();
+            }
+        }
+        
+        function saveBookings() {
+            localStorage.setItem('djmorocco_bookings', JSON.stringify(bookings));
+        }
+        
+        function saveClients() {
+            localStorage.setItem('djmorocco_clients', JSON.stringify(clients));
+        }
+        
+        function saveTeam() {
+            localStorage.setItem('djmorocco_team', JSON.stringify(teamMembers));
+        }
+        
+        // Authentication
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            currentUser = { email, name: email.split('@')[0] };
+            localStorage.setItem('djmorocco_user', JSON.stringify(currentUser));
+            
+            document.getElementById('loginContainer').classList.remove('active');
+            document.getElementById('appContainer').classList.add('active');
+            loadData();
+            showDashboard();
+        });
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('djmorocco_user');
+            document.getElementById('loginContainer').classList.add('active');
+            document.getElementById('appContainer').classList.remove('active');
+        }
+        
+        // Check for existing session
+        const savedUser = localStorage.getItem('djmorocco_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            document.getElementById('loginContainer').classList.remove('active');
+            document.getElementById('appContainer').classList.add('active');
+            loadData();
+            showDashboard();
+        }
+        
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                const page = item.dataset.page;
+                if (page === 'dashboard') showDashboard();
+                else if (page === 'bookings') showBookings();
+                else if (page === 'calendar') showCalendar();
+                else if (page === 'clients') showClients();
+                else if (page === 'contracts') showContracts();
+                else if (page === 'payments') showPayments();
+                else if (page === 'team') showTeam();
+                else if (page === 'profile') showProfile();
+            });
+        });
+        
+        // Dashboard
+        function showDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayBookings = bookings.filter(b => b.eventDate === today);
+            const upcoming = bookings.filter(b => b.eventDate >= today )
+            .sort((a,b) => new Date(a.eventDate) - new Date(b.eventDate));
+            const totalRevenue = bookings.reduce((sum, b) => sum + (b.deposit || 0), 0);
+            const pendingPayments = bookings.filter(b => b.status === 'Pending').length;
+            
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">Welcome back, Dj mimoun  🎧</h1>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-calendar-day" style="color: var(--gold-primary); font-size: 2rem;"></i>
+                            <h3>Today's Bookings</h3>
+                            <div class="stat-value">${todayBookings.length}</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-calendar-week" style="color: var(--gold-primary); font-size: 2rem;"></i>
+                            <h3>Upcoming Events</h3>
+                            <div class="stat-value">${upcoming.length}</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-dollar-sign" style="color: var(--gold-primary); font-size: 2rem;"></i>
+                            <h3>Monthly Revenue</h3>
+                            <div class="stat-value">${totalRevenue.toLocaleString()} MAD</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clock" style="color: var(--gold-primary); font-size: 2rem;"></i>
+                            <h3>Pending Payments</h3>
+                            <div class="stat-value">${pendingPayments}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h3>Today's Schedule</h3>
+                        ${todayBookings.length === 0 ? '<p style="color: var(--text-secondary);">No events today</p>' : 
+                            todayBookings.map(b => `
+                                <div class="booking-item">
+                                    <div>
+                                        <strong>${b.clientName}</strong><br>
+                                        ${b.eventType} in (${b.city})
+                                    </div>
+                                    <div>
+                                        
+                                        <span class="booking-badge">${b.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                    
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h3>Upcoming Events</h3>
+                        ${upcoming.length === 0 ? '<p style="color: var(--text-secondary);">No upcoming events</p>' :
+                            upcoming.slice(0, 5).map(b => `
+                                <div class="booking-item">
+                                    <div>
+                                        <strong>${b.clientName}</strong><br>
+                                        ${b.eventType} - ${b.eventDate}
+                                    </div>
+                                    <div>
+                                         ${b.city}
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        // Bookings Management
+        function showBookings() {
+            const html = `
+                <div class="animate-fadeInUp">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Booking Management</h1>
+                        <button class="btn-gold" onclick="showAddBookingModal()">
+                            <i class="fas fa-plus"></i> New Booking
+                        </button>
+                    </div>
+                    
+                    <div class="bookings-list">
+                        ${bookings.map(b => `
+                            <div class="booking-item">
+                                <div>
+                                    <strong>${b.clientName}</strong><br>
+                                    <small>${b.eventType} | ${b.eventDate} | ${b.startTime}</small><br>
+                                    <small>${b.venue}, ${b.city}</small>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="booking-badge">${b.status}</div>
+                                    <div style="margin-top: 0.5rem;">
+                                        <button class="btn-outline-gold" style="padding: 4px 12px; font-size: 12px;" onclick="editBooking(${b.id})">Edit</button>
+                                        <button class="btn-outline-gold" style="padding: 4px 12px; font-size: 12px; border-color: var(--danger);" onclick="deleteBooking(${b.id})">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        function showAddBookingModal() {
+            const modalContent = `
+                <h2>New Booking</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label>Client Name *</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Client Phone *</label>
+                        <input type="tel" id="clientPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type *</label>
+                        <select id="eventType">
+                            <option>Wedding</option>
+                            <option>Engagement</option>
+                            <option>Birthday</option>
+                            <option>Private Party</option>
+                            <option>Corporate</option>
+                            <option>Ceremony</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>City *</label>
+                        <select id="city">
+                            <option>Casablanca</option>
+                            <option>Rabat</option>
+                            <option>Fes</option>
+                            <option>Tangier</option>
+                            <option>Marrakech</option>
+                            <option>Nador</option>
+                            <option>Al Hoceima</option>
+                            <option>Oujda</option>
+                            <option>Taza</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Event Date *</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Package</label>
+                        <select id="package">
+                            <option value="5000">Basic (5000 MAD)</option>
+                            <option value="10000">Premium (10000 MAD)</option>
+                            <option value="20000">Luxury Wedding (20000 MAD)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Deposit Paid (MAD)</label>
+                        <input type="number" id="deposit" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Special Requests</label>
+                        <textarea id="specialRequests" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-gold" style="width: 100%;">Create Booking</button>
+                </form>
+            `;
+            
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('modal').classList.add('active');
+            
+            document.getElementById('bookingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newBooking = {
+                    id: Date.now(),
+                    clientName: document.getElementById('clientName').value,
+                    clientPhone: document.getElementById('clientPhone').value,
+                    eventType: document.getElementById('eventType').value,
+                    city: document.getElementById('city').value,
+                    eventDate: document.getElementById('eventDate').value,
+                    
+                    specialRequests: document.getElementById('specialRequests').value,
+                    deposit: parseInt(document.getElementById('deposit').value),
+                    totalPrice: parseInt(document.getElementById('package').value),
+                    status: "Pending"
+                };
+                bookings.push(newBooking);
+                saveBookings();
+                document.getElementById('modal').classList.remove('active');
+                showBookings();
+            });
+        }
+        
+        function editBooking(id) {
+            const booking = bookings.find(b => b.id === id);
+            if (!booking) return;
+            
+            const modalContent = `
+                <h2>Edit Booking</h2>
+                <form id="editBookingForm">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" id="clientName" value="${booking.clientName}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Client Phone</label>
+                        <input type="tel" id="clientPhone" value="${booking.clientPhone}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type</label>
+                        <select id="eventType">
+                            <option ${booking.eventType === 'Wedding' ? 'selected' : ''}>Wedding</option>
+                            <option ${booking.eventType === 'Engagement' ? 'selected' : ''}>Engagement</option>
+                            <option ${booking.eventType === 'Birthday' ? 'selected' : ''}>Birthday</option>
+                            <option ${booking.eventType === 'Private Party' ? 'selected' : ''}>Private Party</option>
+                            <option ${booking.eventType === 'Corporate' ? 'selected' : ''}>Corporate</option>
+                            <option ${booking.eventType === 'Ceremony' ? 'selected' : ''}>Ceremony</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option ${booking.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option ${booking.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option ${booking.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option ${booking.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-gold" style="width: 100%;">Update Booking</button>
+                </form>
+            `;
+            
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('modal').classList.add('active');
+            
+            document.getElementById('editBookingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                booking.clientName = document.getElementById('clientName').value;
+                booking.clientPhone = document.getElementById('clientPhone').value;
+                booking.eventType = document.getElementById('eventType').value;
+                booking.status = document.getElementById('status').value;
+                saveBookings();
+                document.getElementById('modal').classList.remove('active');
+                showBookings();
+            });
+        }
+        
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                saveBookings();
+                showBookings();
+            }
+        }
+        
+        // Calendar View
+        function showCalendar() {
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDayOfWeek = firstDay.getDay();
+            
+            let calendarHtml = '<div class="calendar-container"><div class="calendar-header"><button class="btn-outline-gold" onclick="previousMonth()">◀</button><h2>' + 
+                new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long', year: 'numeric' }) + 
+                '</h2><button class="btn-outline-gold" onclick="nextMonth()">▶</button></div><div class="calendar-grid">';
+            
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            weekdays.forEach(day => {
+                calendarHtml += `<div style="text-align: center; font-weight: 600; color: var(--gold-primary);">${day}</div>`;
+            });
+            
+            let dayCounter = 1;
+            for (let i = 0; i < 42; i++) {
+                if (i < startDayOfWeek || dayCounter > daysInMonth) {
+                    calendarHtml += '<div class="calendar-day" style="opacity: 0.3;"></div>';
+                } else {
+                    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayCounter).padStart(2, '0')}`;
+                    const dayBookings = bookings.filter(b => b.eventDate === dateStr);
+                    calendarHtml += `
+                        <div class="calendar-day ${dateStr === today.toISOString().split('T')[0] ? 'today' : ''}" onclick="showDayBookings('${dateStr}')">
+                            <div class="day-number">${dayCounter}</div>
+                            ${dayBookings.map(b => `<div class="booking-badge">${b.clientName.substring(0, 10)}</div>`).join('')}
+                        </div>
+                    `;
+                    dayCounter++;
+                }
+            }
+            
+            calendarHtml += '</div></div>';
+            document.getElementById('mainContent').innerHTML = calendarHtml;
+        }
+        
+        function showDayBookings(date) {
+            const dayBookings = bookings.filter(b => b.eventDate === date);
+            const modalContent = `
+                <h2>Bookings for ${date}</h2>
+                ${dayBookings.length === 0 ? '<p>No bookings on this day</p>' : 
+                    dayBookings.map(b => `
+                        <div class="booking-item">
+                            <div>
+                                <strong>${b.clientName}</strong><br>
+                                ${b.eventType} at ${b.venue}<br>
+                                ${b.startTime} - ${b.endTime}
+                            </div>
+                        </div>
+                    `).join('')
+                }
+                <button class="btn-gold" onclick="closeModal()" style="margin-top: 1rem;">Close</button>
+            `;
+            document.getElementById('modalContent').innerHTML = modalContent;
+            document.getElementById('modal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+        
+        // Clients CRM
+        function showClients() {
+            const uniqueClients = [...new Map(bookings.map(b => [b.clientName, b])).values()];
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">Client CRM</h1>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Clients</h3>
+                            <div class="stat-value">${uniqueClients.length}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Bookings</h3>
+                            <div class="stat-value">${bookings.length}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bookings-list">
+                        ${uniqueClients.map(c => `
+                            <div class="booking-item">
+                                <div>
+                                    <strong>${c.clientName}</strong><br>
+                                    <small>${c.clientPhone}</small><br>
+                                    <small>Last Event: ${c.eventType} at ${c.venue}</small>
+                                </div>
+                                <div>
+                                    <a href="https://wa.me/${c.clientPhone.replace(/\D/g, '')}" target="_blank" class="whatsapp-btn">
+                                        <i class="fab fa-whatsapp"></i> WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        // Contracts
+        function showContracts() {
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">Contract Generator</h1>
+                    <div class="glass-card" style="padding: 2rem;">
+                        <form id="contractForm">
+                            <div class="form-group">
+                                <label>Select Booking</label>
+                                <select id="contractBooking">
+                                    ${bookings.map(b => `<option value="${b.id}">${b.clientName} - ${b.eventDate} - ${b.eventType}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Language</label>
+                                <select id="contractLang">
+                                    <option value="fr">Français</option>
+                                    <option value="ar">العربية</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-gold">Generate Contract (PDF)</button>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card" style="padding: 1.5rem; margin-top: 1rem;">
+                        <h3>Contract Preview</h3>
+                        <div id="contractPreview" style="background: white; color: black; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            Select a booking to generate contract
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+            
+            document.getElementById('contractForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const bookingId = parseInt(document.getElementById('contractBooking').value);
+    const booking = bookings.find(b => b.id === bookingId);
+    const lang = document.getElementById('contractLang').value;
+
+    const contractHTML = lang === 'fr' ? `
+<div style="
+    padding:40px;
+    font-family:Arial,sans-serif;
+    color:#111;
+    background:white;
+    border:4px solid #d4af37;
+    border-radius:12px;
+">
+
+    <div style="text-align:center; margin-bottom:30px;">
+        <h1 style="margin:0; color:#d4af37;">DJ MIMOUN</h1>
+        <h2 style="margin:10px 0;">CONTRAT DE PRESTATION DJ</h2>
+        <p style="color:#666;">Contrat professionnel de réservation événementielle</p>
+    </div>
+
+    <hr>
+
+    <h3 style="color:#d4af37;">INFORMATIONS CLIENT</h3>
+    <p><strong>Nom du client :</strong> ${booking.clientName}</p>
+    <p><strong>Téléphone :</strong> ${booking.clientPhone}</p>
+
+    <h3 style="color:#d4af37;">DÉTAILS DE L'ÉVÉNEMENT</h3>
+    <p><strong>Type d’événement :</strong> ${booking.eventType}</p>
+    <p><strong>Date :</strong> ${booking.eventDate}</p>
+    <p><strong>Ville :</strong> ${booking.city}</p>
+
+    <h3 style="color:#d4af37;">CONDITIONS FINANCIÈRES</h3>
+    <div style="background:#f7f7f7; padding:20px; border-radius:10px;">
+        <p><strong>Montant total :</strong> ${booking.totalPrice} MAD</p>
+        <p><strong>Acompte versé :</strong> ${booking.deposit} MAD</p>
+        <p><strong>Reste à payer :</strong> ${booking.totalPrice - booking.deposit} MAD</p>
+    </div>
+
+    <h3 style="color:#d4af37;">CONDITIONS</h3>
+    <p>
+        La réservation est confirmée après paiement de l’acompte.
+        En cas d’annulation par le client, l’acompte n’est pas remboursable.
+    </p>
+
+    <div style="margin-top:60px; display:flex; justify-content:space-between;">
+        <div>
+            <p><strong>Signature Client</strong></p>
+            <br><br>
+            ______________________
+        </div>
+
+        <div>
+            <p><strong>Signature DJ Mimoun</strong></p>
+            <br><br>
+            ______________________
+        </div>
+    </div>
+</div>
+` : `
+<div style="
+    padding:40px;
+    font-family:Arial,sans-serif;
+    color:#111;
+    background:white;
+    border:4px solid #d4af37;
+    border-radius:12px;
+    direction:rtl;
+">
+
+    <div style="text-align:center; margin-bottom:30px;">
+        <h1 style="margin:0; color:#d4af37;">DJ MIMOUN</h1>
+        <h2 style="margin:10px 0;">عقد تقديم خدمات DJ</h2>
+        <p style="color:#666;">عقد احترافي لحجز المناسبات</p>
+    </div>
+
+    <hr>
+
+    <h3 style="color:#d4af37;">معلومات العميل</h3>
+    <p><strong>اسم العميل:</strong> ${booking.clientName}</p>
+    <p><strong>الهاتف:</strong> ${booking.clientPhone}</p>
+
+    <h3 style="color:#d4af37;">تفاصيل المناسبة</h3>
+    <p><strong>نوع المناسبة:</strong> ${booking.eventType}</p>
+    <p><strong>التاريخ:</strong> ${booking.eventDate}</p>
+    <p><strong>المدينة:</strong> ${booking.city}</p>
+
+    <h3 style="color:#d4af37;">الشروط المالية</h3>
+    <div style="background:#f7f7f7; padding:20px; border-radius:10px;">
+        <p><strong>المبلغ الإجمالي:</strong> ${booking.totalPrice} MAD</p>
+        <p><strong>العربون:</strong> ${booking.deposit} MAD</p>
+        <p><strong>المبلغ المتبقي:</strong> ${booking.totalPrice - booking.deposit} MAD</p>
+    </div>
+
+    <h3 style="color:#d4af37;">الشروط</h3>
+    <p>
+        يتم تأكيد الحجز بعد دفع العربون.
+        في حالة الإلغاء من طرف العميل، العربون غير قابل للاسترجاع.
+    </p>
+
+    <div style="margin-top:60px; display:flex; justify-content:space-between;">
+        <div>
+            <p><strong>توقيع العميل</strong></p>
+            <br><br>
+            ______________________
+        </div>
+
+        <div>
+            <p><strong>توقيع DJ Mimoun</strong></p>
+            <br><br>
+            ______________________
+        </div>
+    </div>
+</div>
+`;
+
+    document.getElementById('contractPreview').innerHTML = contractHTML;
+
+    const element = document.getElementById('contractPreview');
+
+    html2pdf()
+        .from(element)
+        .save(`contract-${booking.clientName}.pdf`);
+});
+        }
+        
+        // Payments
+        function showPayments() {
+            const monthlyRevenue = {};
+            bookings.forEach(b => {
+                const month = b.eventDate.substring(0, 7);
+                monthlyRevenue[month] = (monthlyRevenue[month] || 0) + (b.deposit || 0);
+            });
+            
+            const totalRevenue = Object.values(monthlyRevenue).reduce((a, b) => a + b, 0);
+            const pendingAmount = bookings.filter(b => b.status === 'Pending').reduce((sum, b) => sum + (b.totalPrice - (b.deposit || 0)), 0);
+            
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">Payment Analytics</h1>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Revenue</h3>
+                            <div class="stat-value">${totalRevenue.toLocaleString()} MAD</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pending Payments</h3>
+                            <div class="stat-value">${pendingAmount.toLocaleString()} MAD</div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h3>Monthly Earnings Chart</h3>
+                        <div style="margin-top: 2rem;">
+                            ${Object.entries(monthlyRevenue).map(([month, amount]) => `
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>${month}</span>
+                                        <span>${amount.toLocaleString()} MAD</span>
+                                    </div>
+                                    <div style="background: var(--bg-elevated); border-radius: 10px; overflow: hidden;">
+                                        <div style="background: linear-gradient(90deg, var(--gold-primary), var(--gold-secondary)); width: ${(amount / Math.max(...Object.values(monthlyRevenue))) * 100}%; height: 30px; display: flex; align-items: center; padding: 0 10px; color: #0a0a0a; font-weight: 600;">
+                                            ${Math.round((amount / Math.max(...Object.values(monthlyRevenue))) * 100)}%
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        // Team Management
+        function showTeam() {
+            const instruments = ['Violinist', 'Percussionist', 'Singer', 'Assistant DJ'];
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">Team Management</h1>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                        ${instruments.map(instrument => `
+                            <button class="btn-outline-gold" onclick="addTeamMember('${instrument}')">
+                                <i class="fas fa-user-plus"></i> Add ${instrument}
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="bookings-list">
+                        ${teamMembers.map(m => `
+                            <div class="booking-item">
+                                <div>
+                                    <strong>${m.name}</strong><br>
+                                    <small>${m.instrument} | ${m.phone}</small>
+                                </div>
+                                <button class="btn-outline-gold" style="padding: 4px 12px;" onclick="removeTeamMember(${m.id})">Remove</button>
+                            </div>
+                        `).join('')}
+                        ${teamMembers.length === 0 ? '<p style="color: var(--text-secondary);">No team members added yet</p>' : ''}
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        function addTeamMember(instrument) {
+            const name = prompt(`Enter ${instrument} name:`);
+            if (name) {
+                const phone = prompt('Enter phone number:');
+                teamMembers.push({
+                    id: Date.now(),
+                    name,
+                    instrument,
+                    phone: phone || 'Not provided'
+                });
+                saveTeam();
+                showTeam();
+            }
+        }
+        
+        function removeTeamMember(id) {
+            if (confirm('Remove this team member?')) {
+                teamMembers = teamMembers.filter(m => m.id !== id);
+                saveTeam();
+                showTeam();
+            }
+        }
+        
+        // Profile
+        function showProfile() {
+            const html = `
+                <div class="animate-fadeInUp">
+                    <h1 style="margin-bottom: 2rem;">DJ Profile</h1>
+                    <div class="glass-card" style="padding: 2rem; max-width: 600px;">
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label>DJ Name</label>
+                                <input type="text" id="djName" value="${currentUser?.name || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label>Photo URL</label>
+                                <input type="url" id="djPhoto" placeholder="https://example.com/photo.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" id="djPhone" placeholder="+212 XXX XXX XXX">
+                            </div>
+                            <div class="form-group">
+                                <label>Base City</label>
+                                <select id="djCity">
+                                    <option>Casablanca</option>
+                                    <option>Rabat</option>
+                                    <option>Fes</option>
+                                    <option>Tangier</option>
+                                    <option>Marrakech</option>
+                                    <option>Nador</option>
+                                    <option>Al Hoceima</option>
+                                    <option>Oujda</option>
+                                    <option>Taza</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Pricing Packages</label>
+                                <textarea id="djPackages" rows="4" placeholder="Basic: 5000 MAD&#10;Premium: 10000 MAD&#10;Luxury Wedding: 20000 MAD"></textarea>
+                            </div>
+                            <button type="submit" class="btn-gold">Save Profile</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+        
+        window.showAddBookingModal = showAddBookingModal;
+        window.editBooking = editBooking;
+        window.deleteBooking = deleteBooking;
+        window.showDayBookings = showDayBookings;
+        window.closeModal = closeModal;
+        window.addTeamMember = addTeamMember;
+        window.removeTeamMember = removeTeamMember;
+        window.previousMonth = () => showCalendar();
+        window.nextMonth = () => showCalendar();
+        window.logout = logout;
+    </script>
+</body>
+</html>
