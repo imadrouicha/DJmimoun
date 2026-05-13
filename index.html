@@ -157,12 +157,26 @@
             color: transparent;
         }
 
-        .nav-menu {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+      .nav-menu {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    gap: 10px;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+}
 
+.nav-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 10px 14px;
+    font-size: 13px;
+}
         .nav-item {
             padding: 0.75rem 1.5rem;
             cursor: pointer;
@@ -353,8 +367,8 @@
 
     .nav-content {
         flex-direction: column;
-        gap: 15px;
-        align-items: center;
+        gap: 10px;
+        align-items: stretch;
     }
 
     .nav-menu {
