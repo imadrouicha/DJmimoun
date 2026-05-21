@@ -729,7 +729,16 @@ showDashboard();
         
         function showAddBookingModal() {
             const modalContent = `
+                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h2>New Booking</h2>
+                <button onclick="closeModal()" style="
+                background:none;
+                border:none;
+                color:white;
+                font-size:28px;
+                cursor:pointer;
+                    ">×</button>
+                </div>
                 <form id="bookingForm">
                     <div class="form-group">
                         <label>Client Name *</label>
@@ -750,19 +759,14 @@ showDashboard();
                             <option>Ceremony</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>City *</label>
-                        <select id="city">
-                            <option>Casablanca</option>
-                            <option>Rabat</option>
-                            <option>Fes</option>
-                            <option>Tangier</option>
-                            <option>Marrakech</option>
-                            <option>Nador</option>
-                            <option>Al Hoceima</option>
-                            <option>Oujda</option>
-                            <option>Taza</option>
-                        </select>
+                        <input type="text" id="city" placeholder="Enter city" required>
+                    </div>
+                        <div class="form-group">
+                        <label>Salle de fête</label>
+                        <input type="text" id="venue" placeholder="Nom de la salle">
                     </div>
                     
                     <div class="form-group">
@@ -771,13 +775,9 @@ showDashboard();
                     </div>
                     
                     <div class="form-group">
-                        <label>Package</label>
-                        <select id="package">
-                            <option value="5000">Basic (5000 MAD)</option>
-                            <option value="10000">Premium (10000 MAD)</option>
-                            <option value="20000">Luxury Wedding (20000 MAD)</option>
-                        </select>
-                    </div>
+    <label>Total Price (MAD)</label>
+    <input type="number" id="package" placeholder="Enter total price" required>
+</div>
                     <div class="form-group">
                         <label>Deposit Paid (MAD)</label>
                         <input type="number" id="deposit" value="0">
@@ -801,6 +801,7 @@ showDashboard();
                     clientPhone: document.getElementById('clientPhone').value,
                     eventType: document.getElementById('eventType').value,
                     city: document.getElementById('city').value,
+                    venue: document.getElementById('venue').value,
                     eventDate: document.getElementById('eventDate').value,
                     
                     specialRequests: document.getElementById('specialRequests').value,
@@ -941,6 +942,11 @@ showDashboard();
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
         }
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                        closeModal();
+                }
+        });
         
         // Clients CRM
         function showClients() {
@@ -1046,6 +1052,7 @@ showDashboard();
     <h3 style="color:#d4af37;">DÉTAILS DE L'ÉVÉNEMENT</h3>
     <p><strong>Type d’événement :</strong> ${booking.eventType}</p>
     <p><strong>Date :</strong> ${booking.eventDate}</p>
+    <p><strong>Salle de fête :</strong> ${booking.venue}</p>
     <p><strong>Ville :</strong> ${booking.city}</p>
 
     <h3 style="color:#d4af37;">CONDITIONS FINANCIÈRES</h3>
@@ -1101,6 +1108,7 @@ showDashboard();
     <h3 style="color:#d4af37;">تفاصيل المناسبة</h3>
     <p><strong>نوع المناسبة:</strong> ${booking.eventType}</p>
     <p><strong>التاريخ:</strong> ${booking.eventDate}</p>
+    <p><strong>قاعة الحفلات:</strong> ${booking.venue}</p>
     <p><strong>المدينة:</strong> ${booking.city}</p>
 
     <h3 style="color:#d4af37;">الشروط المالية</h3>
