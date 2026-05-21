@@ -501,25 +501,17 @@
         
         // Load data from localStorage
         function loadData() {
-            const storedBookings = localStorage.getItem('djmorocco_bookings');
-            if (storedBookings) { bookings = JSON.parse(storedBookings);
-        } else {
-            bookings = [];
-        }
-    
-            
-            const storedClients = localStorage.getItem('djmorocco_clients');
-            if (storedClients) clients = JSON.parse(storedClients);
-            
-            const storedTeam = localStorage.getItem('djmorocco_team');
-            if (storedTeam) teamMembers = JSON.parse(storedTeam);
-            
-            // Demo data if empty
-            
-        }
+    const storedBookings = localStorage.getItem('dj_bookings');
+
+    if (storedBookings) {
+        bookings = JSON.parse(storedBookings);
+    } else {
+        bookings = [];
+    }
+}
         
         function saveBookings() {
-            localStorage.setItem('djmorocco_bookings', JSON.stringify(bookings));
+            localStorage.setItem('dj_bookings', JSON.stringify(bookings));
         }
         
         function saveClients() {
@@ -776,7 +768,7 @@
                 };
                 bookings.push(newBooking);
                 saveBookings();
-                document.getElementById('modal').classList.remove('active');
+                closeModal();
                 showBookings();
             });
         }
@@ -1178,6 +1170,8 @@
         window.previousMonth = () => showCalendar();
         window.nextMonth = () => showCalendar();
         window.logout = logout;
+        loadData();
+        showDashboard();
     </script>
 </body>
 </html>
