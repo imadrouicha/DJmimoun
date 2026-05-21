@@ -567,78 +567,96 @@
         
         // Dashboard
         function showDashboard() {
-            if (!bookings) bookings = [];
-            const today = new Date().toISOString().split('T')[0];
-            const todayBookings = bookings.filter(b => b.eventDate === today);
-            const upcoming = bookings.filter(b => b.eventDate >= today )
-            .sort((a,b) => new Date(a.eventDate) - new Date(b.eventDate));
-            const totalRevenue = bookings.reduce((sum, b) => sum + (b.deposit || 0), 0);
-            const pendingPayments = bookings.filter(b => b.status === 'Pending').length;
-            
-            const html = `
-                <div class="animate-fadeInUp">
-                    <h1 style="margin-bottom: 2rem;">Welcome back, Dj mimoun  🎧</h1>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <i class="fas fa-calendar-day" style="color: var(--gold-primary); font-size: 2rem;"></i>
-                            <h3>Today's Bookings</h3>
-                            <div class="stat-value">${todayBookings.length}</div>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-calendar-week" style="color: var(--gold-primary); font-size: 2rem;"></i>
-                            <h3>Upcoming Events</h3>
-                            <div class="stat-value">${upcoming.length}</div>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-dollar-sign" style="color: var(--gold-primary); font-size: 2rem;"></i>
-                            <h3>Monthly Revenue</h3>
-                            <div class="stat-value">${totalRevenue.toLocaleString()} MAD</div>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-clock" style="color: var(--gold-primary); font-size: 2rem;"></i>
-                            <h3>Pending Payments</h3>
-                            <div class="stat-value">${pendingPayments}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h3>Today's Schedule</h3>
-                        ${todayBookings.length === 0 ? '<p style="color: var(--text-secondary);">No events today</p>' : 
-                            todayBookings.map(b => `
-                                <div class="booking-item">
-                                    <div>
-                                        <strong>${b.clientName}</strong><br>
-                                        ${b.eventType} in (${b.city})
-                                    </div>
-                                    <div>
-                                        
-                                        <span class="booking-badge">${b.status}</span>
-                                    </div>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
-                    
-                    <div class="glass-card" style="padding: 1.5rem;">
-                        <h3>Upcoming Events</h3>
-                        ${upcoming.length === 0 ? '<p style="color: var(--text-secondary);">No upcoming events</p>' :
-                            upcoming.slice(0, 5).map(b => `
-                                <div class="booking-item">
-                                    <div>
-                                        <strong>${b.clientName}</strong><br>
-                                        ${b.eventType} - ${b.eventDate}
-                                    </div>
-                                    <div>
-                                         ${b.city}
-                                    </div>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
+    if (!Array.isArray(bookings)) {
+        bookings = [];
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const todayBookings = bookings.filter(b => b && b.eventDate === today);
+
+    const upcoming = bookings
+        .filter(b => b && b.eventDate && b.eventDate >= today)
+        .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+
+    const totalRevenue = bookings.reduce((sum, b) => {
+        return sum + (parseInt(b.deposit) || 0);
+    }, 0);
+
+    const pendingPayments = bookings.filter(
+        b => b && b.status === 'Pending'
+    ).length;
+
+    const html = `
+        <div class="animate-fadeInUp">
+            <h1 style="margin-bottom: 2rem;">Welcome back, DJ Mimoun 🎧</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Today's Bookings</h3>
+                    <div class="stat-value">${todayBookings.length}</div>
                 </div>
-            `;
-            document.getElementById('mainContent').innerHTML = html;
-        }
+
+                <div class="stat-card">
+                    <h3>Upcoming Events</h3>
+                    <div class="stat-value">${upcoming.length}</div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Revenue</h3>
+                    <div class="stat-value">${totalRevenue} MAD</div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Pending Payments</h3>
+                    <div class="stat-value">${pendingPayments}</div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding:1.5rem; margin-top:20px;">
+                <h3>Today's Schedule</h3>
+
+                ${
+                    todayBookings.length === 0
+                        ? '<p style="color:#999;">No bookings today</p>'
+                        : todayBookings.map(b => `
+                            <div class="booking-item">
+                                <div>
+                                    <strong>${b.clientName}</strong><br>
+                                    ${b.eventType} (${b.city})
+                                </div>
+                                <div>
+                                    <span class="booking-badge">${b.status}</span>
+                                </div>
+                            </div>
+                        `).join('')
+                }
+            </div>
+
+            <div class="glass-card" style="padding:1.5rem; margin-top:20px;">
+                <h3>Upcoming Events</h3>
+
+                ${
+                    upcoming.length === 0
+                        ? '<p style="color:#999;">No upcoming events</p>'
+                        : upcoming.slice(0, 5).map(b => `
+                            <div class="booking-item">
+                                <div>
+                                    <strong>${b.clientName}</strong><br>
+                                    ${b.eventType} - ${b.eventDate}
+                                </div>
+                                <div>
+                                    ${b.city}
+                                </div>
+                            </div>
+                        `).join('')
+                }
+            </div>
+        </div>
+    `;
+
+    document.getElementById('mainContent').innerHTML = html;
+}
         
         // Bookings Management
         function showBookings() {
