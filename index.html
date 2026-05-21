@@ -465,13 +465,26 @@
 </head>
 <body>
     <div id="loginContainer" class="app-container active">
+        <form id="loginForm">
+    <div class="form-group">
+        <input type="text" id="loginUser" placeholder="Username" required>
+    </div>
+
+    <div class="form-group">
+        <input type="password" id="loginPassword" placeholder="Password" required>
+    </div>
+
+    <button type="submit" class="btn-gold" style="width:100%;">
+        Login
+    </button>
+</form>
         <div style="min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem;">
             <div class="glass-card" style="padding: 3rem; max-width: 400px; width: 100%; text-align: center;">
                 <h1 class="logo" style="font-size: 3rem; margin-bottom: 2rem;">DJ Mimoun</h1>
                 <h2 style="margin-bottom: 1.5rem;">Welcome Back</h2>
                 <form id="loginForm">
                     <div class="form-group">
-                        <input type="email" id="loginEmail" placeholder="Email" required style="background: var(--bg-elevated);">
+                        <input type="text" id="loginEmail" placeholder="Email" required style="background: var(--bg-elevated);">
                     </div>
                     <div class="form-group">
                         <input type="password" id="loginPassword" placeholder="Password" required>
@@ -529,41 +542,7 @@
             if (storedTeam) teamMembers = JSON.parse(storedTeam);
             
             // Demo data if empty
-            if (bookings.length === 0) {
-                bookings = [
-                    {
-                        id: 1,
-                        clientName: "Ahmed Benjelloun",
-                        clientPhone: "+212 6XX XXX XXX",
-                        eventType: "Wedding",
-                        city: "Casablanca",
-                        venue: "Four Seasons Hotel",
-                        eventDate: new Date().toISOString().split('T')[0],
-                        startTime: "19:00",
-                        endTime: "02:00",
-                        specialRequests: "Moroccan & International Mix",
-                        deposit: 5000,
-                        totalPrice: 15000,
-                        status: "Confirmed"
-                    },
-                    {
-                        id: 2,
-                        clientName: "Fatima Zahra",
-                        clientPhone: "+212 6XX XXX XXX",
-                        eventType: "Engagement",
-                        city: "Marrakech",
-                        venue: "La Mamounia",
-                        eventDate: new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0],
-                        startTime: "20:00",
-                        endTime: "01:00",
-                        specialRequests: "Traditional Moroccan Music",
-                        deposit: 3000,
-                        totalPrice: 10000,
-                        status: "Pending"
-                    }
-                ];
-                saveBookings();
-            }
+            
         }
         
         function saveBookings() {
@@ -579,28 +558,47 @@
         }
         
         // Authentication
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            currentUser = { email, name: email.split('@')[0] };
-            localStorage.setItem('djmorocco_user', JSON.stringify(currentUser));
-            
-            document.getElementById('loginContainer').classList.remove('active');
-            document.getElementById('appContainer').classList.add('active');
-            loadData();
-            showDashboard();
-        });
+        const ADMIN_USER = "djmimoun";
+const ADMIN_PASS = "12345678";
+
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('loginUser').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+        currentUser = {
+            name: "DJ Mimoun"
+        };
+
+        localStorage.setItem('djmorocco_loggedin', 'true');
+
+        document.getElementById('loginContainer').classList.remove('active');
+        document.getElementById('appContainer').classList.add('active');
+
+        loadData();
+        showDashboard();
+    } else {
+        alert("Incorrect username or password");
+    }
+});
         
-        function logout() {}
-        
-        // Check for existing session
-        currentUser = { name: "DJ Mimoun" };
-document.getElementById('loginContainer').style.display = 'none';
-document.getElementById('appContainer').classList.add('active');
-loadData();
-showDashboard();
+        function logout() {
+    localStorage.removeItem('djmorocco_loggedin');
+
+    document.getElementById('loginContainer').classList.add('active');
+    document.getElementById('appContainer').classList.remove('active');
+}
+    if (localStorage.getItem('djmorocco_loggedin') === 'true') {
+    currentUser = { name: "DJ Mimoun" };
+
+    document.getElementById('loginContainer').classList.remove('active');
+    document.getElementById('appContainer').classList.add('active');
+
+    loadData();
+    showDashboard();
+}
         
         // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
