@@ -502,7 +502,11 @@
         // Load data from localStorage
         function loadData() {
             const storedBookings = localStorage.getItem('djmorocco_bookings');
-            if (storedBookings) bookings = JSON.parse(storedBookings);
+            if (storedBookings) { bookings = JSON.parse(storedBookings);
+        } else {
+            bookings = [];
+        }
+    
             
             const storedClients = localStorage.getItem('djmorocco_clients');
             if (storedClients) clients = JSON.parse(storedClients);
