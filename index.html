@@ -464,39 +464,9 @@
     </style>
 </head>
 <body>
-    <div id="loginContainer" class="app-container active">
-        <form id="loginForm">
-    <div class="form-group">
-        <input type="text" id="loginUser" placeholder="Username" required>
-    </div>
+    
 
-    <div class="form-group">
-        <input type="password" id="loginPassword" placeholder="Password" required>
-    </div>
-
-    <button type="submit" class="btn-gold" style="width:100%;">
-        Login
-    </button>
-</form>
-        <div style="min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem;">
-            <div class="glass-card" style="padding: 3rem; max-width: 400px; width: 100%; text-align: center;">
-                <h1 class="logo" style="font-size: 3rem; margin-bottom: 2rem;">DJ Mimoun</h1>
-                <h2 style="margin-bottom: 1.5rem;">Welcome Back</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <input type="text" id="loginEmail" placeholder="Email" required style="background: var(--bg-elevated);">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="loginPassword" placeholder="Password" required>
-                    </div>
-                    <button type="submit" class="btn-gold" style="width: 100%;">Login / Sign Up</button>
-                </form>
-                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 12px;">Demo: Any email/password works</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="appContainer" class="app-container">
+    <div id="appContainer" class="app-container active">
         <div class="nav-bar">
             <div class="nav-content">
                 <div class="logo">🎧 DJ Mimoun</div>
@@ -558,31 +528,7 @@
         }
         
         // Authentication
-        const ADMIN_USER = "djmimoun";
-const ADMIN_PASS = "12345678";
-
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const username = document.getElementById('loginUser').value;
-    const password = document.getElementById('loginPassword').value;
-
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-        currentUser = {
-            name: "DJ Mimoun"
-        };
-
-        localStorage.setItem('djmorocco_loggedin', 'true');
-
-        document.getElementById('loginContainer').classList.remove('active');
-        document.getElementById('appContainer').classList.add('active');
-
-        loadData();
-        showDashboard();
-    } else {
-        alert("Incorrect username or password");
-    }
-});
+      
         
         function logout() {
     localStorage.removeItem('djmorocco_loggedin');
@@ -592,6 +538,8 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
 }
     if (localStorage.getItem('djmorocco_loggedin') === 'true') {
     currentUser = { name: "DJ Mimoun" };
+    loadData();
+    showDashboard();
 
     document.getElementById('loginContainer').classList.remove('active');
     document.getElementById('appContainer').classList.add('active');
