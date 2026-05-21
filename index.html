@@ -469,7 +469,7 @@
     <div id="appContainer" class="app-container active">
         <div class="nav-bar">
             <div class="nav-content">
-                <div class="logo">🎧 DJ Mimoun</div>
+                <div class="logo" onclick="showDashboard()" style="cursor: pointer;">🎧 DJ Mimoun</div>
                 <div class="nav-menu" id="navMenu">
                     <div class="nav-item active" data-page="dashboard">📊 Dashboard</div>
                     <div class="nav-item" data-page="bookings">📅 Bookings</div>
@@ -477,8 +477,7 @@
                     <div class="nav-item" data-page="clients">👥 Clients</div>
                     <div class="nav-item" data-page="contracts">📄 Contracts</div>
                     <div class="nav-item" data-page="payments">💰 Payments</div>
-                    <div class="nav-item" data-page="team">🎵 Team</div>
-                    <div class="nav-item" data-page="profile">👤 Profile</div>
+                    
                 </div>
                 
             </div>
@@ -533,7 +532,6 @@
         function logout() {
     localStorage.removeItem('djmorocco_loggedin');
 
-    document.getElementById('loginContainer').classList.add('active');
     document.getElementById('appContainer').classList.remove('active');
 }
     if (localStorage.getItem('djmorocco_loggedin') === 'true') {
@@ -541,7 +539,6 @@
     loadData();
     showDashboard();
 
-    document.getElementById('loginContainer').classList.remove('active');
     document.getElementById('appContainer').classList.add('active');
 
     loadData();
@@ -560,13 +557,13 @@
                 else if (page === 'clients') showClients();
                 else if (page === 'contracts') showContracts();
                 else if (page === 'payments') showPayments();
-                else if (page === 'team') showTeam();
-                else if (page === 'profile') showProfile();
+             
             });
         });
         
         // Dashboard
         function showDashboard() {
+            if (!bookings) bookings = [];
             const today = new Date().toISOString().split('T')[0];
             const todayBookings = bookings.filter(b => b.eventDate === today);
             const upcoming = bookings.filter(b => b.eventDate >= today )
@@ -1145,111 +1142,17 @@
         }
         
         // Team Management
-        function showTeam() {
-            const instruments = ['Violinist', 'Percussionist', 'Singer', 'Assistant DJ'];
-            const html = `
-                <div class="animate-fadeInUp">
-                    <h1 style="margin-bottom: 2rem;">Team Management</h1>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
-                        ${instruments.map(instrument => `
-                            <button class="btn-outline-gold" onclick="addTeamMember('${instrument}')">
-                                <i class="fas fa-user-plus"></i> Add ${instrument}
-                            </button>
-                        `).join('')}
-                    </div>
-                    
-                    <div class="bookings-list">
-                        ${teamMembers.map(m => `
-                            <div class="booking-item">
-                                <div>
-                                    <strong>${m.name}</strong><br>
-                                    <small>${m.instrument} | ${m.phone}</small>
-                                </div>
-                                <button class="btn-outline-gold" style="padding: 4px 12px;" onclick="removeTeamMember(${m.id})">Remove</button>
-                            </div>
-                        `).join('')}
-                        ${teamMembers.length === 0 ? '<p style="color: var(--text-secondary);">No team members added yet</p>' : ''}
-                    </div>
-                </div>
-            `;
-            document.getElementById('mainContent').innerHTML = html;
-        }
-        
-        function addTeamMember(instrument) {
-            const name = prompt(`Enter ${instrument} name:`);
-            if (name) {
-                const phone = prompt('Enter phone number:');
-                teamMembers.push({
-                    id: Date.now(),
-                    name,
-                    instrument,
-                    phone: phone || 'Not provided'
-                });
-                saveTeam();
-                showTeam();
-            }
-        }
-        
-        function removeTeamMember(id) {
-            if (confirm('Remove this team member?')) {
-                teamMembers = teamMembers.filter(m => m.id !== id);
-                saveTeam();
-                showTeam();
-            }
-        }
+    
         
         // Profile
-        function showProfile() {
-            const html = `
-                <div class="animate-fadeInUp">
-                    <h1 style="margin-bottom: 2rem;">DJ Profile</h1>
-                    <div class="glass-card" style="padding: 2rem; max-width: 600px;">
-                        <form id="profileForm">
-                            <div class="form-group">
-                                <label>DJ Name</label>
-                                <input type="text" id="djName" value="${currentUser?.name || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label>Photo URL</label>
-                                <input type="url" id="djPhoto" placeholder="https://example.com/photo.jpg">
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" id="djPhone" placeholder="+212 XXX XXX XXX">
-                            </div>
-                            <div class="form-group">
-                                <label>Base City</label>
-                                <select id="djCity">
-                                    <option>Casablanca</option>
-                                    <option>Rabat</option>
-                                    <option>Fes</option>
-                                    <option>Tangier</option>
-                                    <option>Marrakech</option>
-                                    <option>Nador</option>
-                                    <option>Al Hoceima</option>
-                                    <option>Oujda</option>
-                                    <option>Taza</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Pricing Packages</label>
-                                <textarea id="djPackages" rows="4" placeholder="Basic: 5000 MAD&#10;Premium: 10000 MAD&#10;Luxury Wedding: 20000 MAD"></textarea>
-                            </div>
-                            <button type="submit" class="btn-gold">Save Profile</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-            document.getElementById('mainContent').innerHTML = html;
-        }
+        
         
         window.showAddBookingModal = showAddBookingModal;
         window.editBooking = editBooking;
         window.deleteBooking = deleteBooking;
         window.showDayBookings = showDayBookings;
         window.closeModal = closeModal;
-        window.addTeamMember = addTeamMember;
-        window.removeTeamMember = removeTeamMember;
+        window.showDashboard = showDashboard;
         window.previousMonth = () => showCalendar();
         window.nextMonth = () => showCalendar();
         window.logout = logout;
